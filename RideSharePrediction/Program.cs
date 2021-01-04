@@ -11,12 +11,6 @@ namespace RideSharePrediction
     {
         static string BaseDatasetPath = @"../../../Data";
         static string assetPath = GetAbsolutePath(BaseDatasetPath);
-
-        private static string GetAbsolutePath(string baseDatasetPath)
-        {
-            throw new NotImplementedException();
-        }
-
         static string fullDatasetPath = Path.Combine(assetPath, "input", "cab_rides.csv");
         static string trainDatasetPath = Path.Combine(assetPath, "output", "trainData.csv");
         static string testDatasetPath = Path.Combine(assetPath, "output", "testData.csv");
@@ -24,6 +18,12 @@ namespace RideSharePrediction
 
         public static void Main(string[] args)
         {
+            if (!File.Exists(fullDatasetPath))
+            {
+                Console.WriteLine("Data set does no exist. Please place the dataset in the input folder under Data.");
+                return;
+            }
+
             MLContext mlContext = new MLContext();
 
             PrepareData(mlContext, fullDatasetPath, trainDatasetPath, testDatasetPath);
@@ -201,5 +201,16 @@ namespace RideSharePrediction
                 }
             }
         }
+
+        private static string GetAbsolutePath(string assetRelativePath)
+        {
+            FileInfo _dataRoot = new FileInfo(typeof(Program).Assembly.Location);
+            string assemblyFolderPath = _dataRoot.Directory.FullName;
+
+            string fullPath = Path.Combine(assemblyFolderPath, assetRelativePath);
+
+            return fullPath;
+        }
+
     }
 }

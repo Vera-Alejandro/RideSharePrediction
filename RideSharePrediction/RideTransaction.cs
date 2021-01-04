@@ -6,37 +6,38 @@ namespace RideSharePrediction.DataStructures
     public interface IModelEntity
     {
         void PrintToConsole();
-    } 
+    }
+
     public class RideTransaction : IModelEntity
     {
         [LoadColumn(0)]
         public float Distance;
-        
-        [LoadColumn(0)]
+
+        [LoadColumn(1)]
         public string CabType;
-        
-        [LoadColumn(0)]
-        public long TimeStamp;
-        
-        [LoadColumn(0)]
+
+        [LoadColumn(2)]
+        public float TimeStamp;
+
+        [LoadColumn(3)]
         public string Destination;
-        
-        [LoadColumn(0)]
+
+        [LoadColumn(4)]
         public string Source;
-        
-        [LoadColumn(0)]
-        public int Price;
-        
-        [LoadColumn(0)]
-        public int SurgeMultiplier;
-        
-        [LoadColumn(0)]
+
+        [LoadColumn(5)]
+        public float Price;
+
+        [LoadColumn(6)]
+        public float SurgeMultiplier;
+
+        [LoadColumn(7)]
         public string Id;
-        
-        [LoadColumn(0)]
+
+        [LoadColumn(8)]
         public string ProductId;
 
-        [LoadColumn(0)]
+        [LoadColumn(9)]
         public string Name;
 
         public void PrintToConsole()
