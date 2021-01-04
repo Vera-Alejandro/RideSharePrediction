@@ -138,8 +138,9 @@ namespace RideSharePrediction
             }
         }
 
-        private static ITransformer TrainModel(MLContext mlContext, IDataView filteredTrainingData, IDataView testingData)
+        private static ITransformer TrainModel(MLContext mlContext, IDataView trainingData, IDataView testData)
         {
+
             IEstimator<ITransformer> dataProcessPipeline = mlContext.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: nameof(RideTransaction.Price))
                 .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "CabTypeEncoded", inputColumnName: nameof(RideTransaction.CabType)))
                 .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "DestinationEncoded", inputColumnName: nameof(RideTransaction.Destination)))
