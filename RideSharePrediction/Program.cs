@@ -3,6 +3,7 @@ using RideSharePrediction.DataStructures;
 using System;
 using System.IO;
 using System.Linq;
+using static Microsoft.ML.DataOperationsCatalog;
 
 namespace RideSharePrediction
 {
@@ -178,7 +179,27 @@ namespace RideSharePrediction
 
         private static void PrepareData(MLContext mlContext, string fullDatasetPath, string trainDatasetPath, string testDatasetPath)
         {
-            throw new NotImplementedException();
+            if (!File.Exists(trainDatasetPath) || !File.Exists(testDatasetPath))
+            {
+                Console.WriteLine("======Preparing the Training and Testing Data ======");
+
+                IDataView origFullData = mlContext.Data.LoadFromTextFile<RideTransaction>(fullDatasetPath, separatorChar: ',', hasHeader: true);
+
+                TrainTestData trainTestData = mlContext.Data.TrainTestSplit(origFullData, testFraction: .2);
+
+                IDataView trainDataset = trainTestData.TrainSet;
+                IDataView testDataset = trainTestData.TestSet;
+
+                using (var fileStream = File.Create(trainDatasetPath))
+                {
+                    mlContext.Data.SaveAsText(trainDataset, fileStream, separatorChar: ',', headerRow: true, schema: true);
+                }
+
+                using (var fileStram = File.Create(testDatasetPath))
+                {
+                    mlContext.Data.SaveAsText(testDataset, fileStram, separatorChar: ',', headerRow: true, schema: true);
+                }
+            }
         }
     }
 }
